@@ -7,9 +7,11 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt update -y && apt upgrade -y && useradd -m docker
 RUN apt install -y --no-install-recommends \
-    curl jq build-essential libssl-dev libffi-dev python3 python3-venv python3-dev python3-pip
+    curl jq build-essential libssl-dev libffi-dev python3 python3-venv python3-dev python3-pip dumb-init
 RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/*
+
+WORKDIR /home/docker
 
 RUN cd /home/docker && mkdir actions-runner && cd actions-runner \
     && curl -O -L https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz \
@@ -28,4 +30,5 @@ RUN chmod +x start.sh
 # set the user to "docker" so all subsequent commands are run as the docker user
 USER docker
 
-ENTRYPOINT ["./start.sh"]
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+CMD ["/home/docker/start.sh"]
