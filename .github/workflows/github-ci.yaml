@@ -35,8 +35,8 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t ghcr.io/${{ github.repository }}/github-runner:latest -t ghcr.io/${{ github.repository }}/reddit-automation:${{ github.sha }} .
-          docker push ghcr.io/${{ github.repository }}/github-runner:latest
+          docker build -t ghcr.io/${{ github.repository }}:latest -t ghcr.io/${{ github.repository }}:${{ github.sha }} .
+          docker push ghcr.io/${{ github.repository }}:latest
 
       - name: Logout from Docker registry
         run: docker logout ghcr.io
