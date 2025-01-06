@@ -40,3 +40,12 @@ jobs:
 
       - name: Logout from Docker registry
         run: docker logout ghcr.io
+
+  update:
+    needs: build
+    runs-on: self-hosted
+
+    steps:
+      - name: Update Portainer
+        run: |
+          curl -X POST https://services.ericbowers.org/api/stacks/webhooks/ed9dd242-d01e-4043-a38a-91c040df2c6e
